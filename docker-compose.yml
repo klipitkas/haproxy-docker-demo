@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+  proxy:
+    image: eeacms/haproxy
+    depends_on:
+      - awesome
+    ports:
+      - 80:5000
+      - 1936:1936
+    environment:
+      - "BACKENDS=awesome:8080"
+      - "DNS_ENABLED=true"
+      - "LOG_LEVEL=info"
+    networks:
+      - web
+
+  awesome:
+    image: awesome:latest
+    ports:
+      - "8080"
+    environment:
+      - "SERVICE_PORTS=8080"
+    networks:
+      - web
+
+networks:
+  web:
